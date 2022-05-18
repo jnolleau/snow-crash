@@ -1,0 +1,30 @@
+Ok !
+We have here two files a bin level09 and a file named token
+
+The level08 binary seems to be a simple reader
+It can read a file created in /tmp AND the token file:
+but no mater there is on the file, the output ob ./level09 is the same
+The output seems to depends on the file name, thus:
+token --> tpmhr
+/tmp/f/file --> /uos3k5mquo
+aaaa --> abcd
+abc --> ace
+
+The bin level09 seems to be an encoder, which add the position number of a character
+to the character in a string
+a becomes a in pos 0
+a becomes b in pos 1
+etc.
+
+with a simple C code decoce.c coded on my host, I reverse the code !
+
+Before that a copied the token file from the vm to my host by:
+scp -Cv -P 4242 level09@172.16.254.130:token .
+then
+chmod 666 token 
+
+pw decoded: f3iji1ju5yuevaus41q1afiuq
+
+dadada !
+
+See flag in flag file

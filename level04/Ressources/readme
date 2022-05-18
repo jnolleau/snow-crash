@@ -1,0 +1,46 @@
+This home contains a level02 file
+this is an exec file with suid for flag03 user and a sgid for level03 group
+
+-rwsr-sr-x 1 flag03  level03 8627 Mar  5  2016 level03
+
+the s lowecase means that this is an executable file
+(in contrary to S Uppercase)
+
+It means that the program is executed by flag03 user,
+even if it is run by level03 user
+
+Maybe we can use this program to run the ´getflag´ command ??
+
+How to do that ?
+See: https://www.imperva.com/learn/application-security/command-injection/
+Part Example 3
+
+Using ltrace ./level03, we can see than the program calls the echo bin:
+¨system("/usr/bin/env echo Exploit me"Exploit me¨
+
+If we create a new ¨echo¨ binary which executes the cmde ¨getflag¨
+and we modify the $PATH in order to the level03 bin to execute OUR ¨echo¨,
+it should work
+
+thus we know in subject that we can use /tmp or /var/tmp to store some file,
+Indeed: d-wx-wx-wx  5 root root  100 May 11 00:32 tmp/
+
+We cannot write into /tmp directly but we can mkdir into it
+lets create a test directory into /tmp
+lets create a test.c file into /tmp/test containing 
+
+int main(void)
+{
+	system("getflag");
+	return (0);
+}
+
+Then we compile with gcc test.c - o echo
+
+We modify the $PATH adding /tmp/test ad its beginning
+
+Then ./level03
+
+Dadada !
+
+Get the token: see flag file

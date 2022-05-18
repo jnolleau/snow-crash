@@ -1,0 +1,18 @@
+ONe first thing to do is to watch in /ect/passwd file to check if pw are not written
+We find all the user levelXX without there pw except for flag01 !
+
+BUT it seems encrypted
+
+=> first tried with decode.fr but no result
+=> Then crack with john
+
+To use John:
+- Use docker to install a Linux version with john available: fedora
+=> ENter the command: docker run -it --rm fedora /bin/bash
+- Inside the container, enter:
+=> yum install john
+=> echo flag01:42hDRfypTqqnw > password
+=> john password --show
+It gives us the cuple login:pw : flag01:abcdefg
+
+Get the token: see flag file

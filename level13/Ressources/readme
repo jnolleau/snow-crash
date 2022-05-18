@@ -1,0 +1,41 @@
+we have 1 file:
+- the binary level13
+When we exec it, we have
+UID 2013 started us but we we expect 4242
+
+ltrace ./level13 
+
+So the bin uses the function getuid()
+
+INDEED, lets use gdb to Check
+
+gdb ./level13
+(gdb) disas main
+
+line 4:  0x08048595 <+9>:	call   0x8048380 <getuid@plt>
+
+Then there is a comparison between eax and 0x1092 (4242 in hex)
+Lets displau eax content:
+
+
+(gdb) display $eax
+1: $eax = 2013
+
+Lets modify eax content:
+(gdb) set $eax = 4242
+(gdb) n
+Single stepping until exit from function main,
+which has no line number information.
+your token is 2A31L79asukciNyi8uppkEuSx
+0xb7e454d3 in __libc_start_main () from /lib/i386-linux-gnu/libc.so.6
+1: $eax = 40
+
+We have our token !
+
+
+
+token is: 2A31L79asukciNyi8uppkEuSx which is the flag
+
+dadada !
+
+See flag in flag file

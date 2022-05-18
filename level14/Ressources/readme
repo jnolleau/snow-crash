@@ -1,0 +1,77 @@
+Okay ! No file, no readme...
+After some times finding nothing, I found a tip: look at the getflag binary !!
+
+ltrace and strace are not instructive
+
+Lets run:
+    gdb getflag
+    disas main
+We see that there is a LOT of instructions
+but we can see ptrace (0x08048989) and getuid (0x08048afd)
+
+Juste after the ptrace we can see a test (90x0804898e).
+Soon after the ptrace we can see jmp to the end of the program.
+Thus value of eax must be tested and jump according to instructions
+
+Lets see the value of eax step by step from the ptrace (0x08048989)
+    b *0x08048989
+    run
+    display $eax --> 0
+    ni
+    display $eax --> -1
+    continue --> END OF program
+So Lets try to modify the eax value juste after ptrace (at test: 0x0804898e)
+    set $eax=0
+    continue --> END of program but with mention "Nope there is no token here for you sorry. Try again :)"
+
+It means that we have tested to display the flag but stoped because our wrong uid
+
+Lets add a breakpoint juste after the getuid, at line 0x08048b02
+    b *0x08048b02
+    continue
+    display $eax --> 2014
+
+The value 2014 is the uid of level14
+We know that the uid of flag14 is 3014 (see /etc/passwd)
+Thus lets chnage the value of eax
+    set $eax=3014
+    continue
+
+DADADA !!!!!
+
+token is: 7QiHafiNa3HVozsaXkawuYrTstxbpABHD8CPnHJ
+
+dadada !
+
+See flag in flag file
+
+
+Here is the copy of the gdb screen with all the commands:
+(The commands entered ar only the lines with "(gdb)" before)
+
+========================
+(gdb) b *0x08048989
+Breakpoint 1 at 0x8048989
+(gdb) run
+Starting program: /bin/getflag 
+
+Breakpoint 1, 0x08048989 in main ()
+(gdb) display $eax
+1: $eax = 0
+(gdb) ni
+0x0804898e in main ()
+1: $eax = -1
+(gdb) set $eax=0
+(gdb) b *0x08048b02
+Breakpoint 2 at 0x8048b02
+(gdb) continue
+Continuing.
+
+Breakpoint 2, 0x08048b02 in main ()
+1: $eax = 2014
+(gdb) set $eax=3014
+(gdb) continue
+Continuing.
+Check flag.Here is your token : 7QiHafiNa3HVozsaXkawuYrTstxbpABHD8CPnHJ
+[Inferior 1 (process 2801) exited normally]
+========================

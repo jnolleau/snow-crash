@@ -1,0 +1,15 @@
+Watch the video -> find the only file readeable by level00
+=> Launch the command: find / -user flag00 2>/dev/null
+
+cat one of the two file in the result of the find command:
+cdiiddwpgswtgt
+
+This gives a pw, it seem encrypted
+Go to dcode.fr
+
+Le site trouve plusieurs systeme d'encodage possibles, le code cesar avec decalage de 15 semble etre le bon:
+cdiiddwpgswtgt -> nottoohardhere
+
+Il ne reste plus qu'à utiliser "nottoohardhere" en pw de flag00
+
+la command getflag donne x24ti5gi3x0ol2eh4esiuxias (see the flag file)

